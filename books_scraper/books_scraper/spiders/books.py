@@ -14,8 +14,8 @@ class BooksSpider(scrapy.Spider):
             item = BooksScraperItem()
             item['title'] = book.css('h3 a::attr(title)').get()
             item['price'] = book.css('div.product_price p.price_color::text').get()
-            item['availability'] = book.css('div.product_price p.instock.availability::text').re_first('\S+')
-            item['rating'] = book.css('p.star-rating::attr(class)').re_first('star-rating\s+(\w+)')
+            item['availability'] = book.css('div.product_price p.instock.availability::text').extract()[-1].strip()
+            item['rating'] = book.css('p.star-rating::attr(class)').extract()
             item['product_page_url'] = response.urljoin(book.css('h3 a::attr(href)').get())
 
             yield item
